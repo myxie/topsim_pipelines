@@ -1,0 +1,150 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Generating observations &#8212; TopSim Pipelines  documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="generating-observations">
+<h1>Generating observations<a class="headerlink" href="#generating-observations" title="Permalink to this headline">¶</a></h1>
+<dl class="py function">
+<dt id="pipelines.hpso_to_observation.create_observation_plan">
+<code class="sig-prename descclassname"><span class="pre">pipelines.hpso_to_observation.</span></code><code class="sig-name descname"><span class="pre">create_observation_plan</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">observations</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_telescope_usage</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pipelines.hpso_to_observation.create_observation_plan" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a sequence of HPSOs that are present in the system sizing
+dictionary, generate a plan. of observations from which we can create
+telescope config.</p>
+<dl class="simple">
+<dt>dataframe<span class="classifier">pandas.DataFrame</span></dt><dd><p>A dataframe describing the potential HPSOs that are to be placed in
+the plan</p>
+</dd>
+<dt>per_hpso_count<span class="classifier">list()</span></dt><dd><p>A list of Integers that describes how many of each HPSO is in the plan</p>
+</dd>
+<dt>max_telescope_usage: float</dt><dd><p>The maximum percentage of the telescope to be occupied at any given
+time. For some simulations, it may be necessary to only ‘simulate’ a
+smaller demand on the telescope.</p>
+</dd>
+</dl>
+<p>Observation scheduling is normally a challenging process and quite
+bespoke. The observation schedules we generate are therefore going to be
+made according to the following heuristic:</p>
+<blockquote>
+<div><ul class="simple">
+<li><dl class="simple">
+<dt>Start with the largest observation in the list</dt><dd><ul>
+<li><p>This is tie broken on duration</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>If there are any more observations that fit on the telescope at the</p></li>
+</ul>
+<p>the same time, we add these to the plan too.
+* The longest observation should be followed by at least one small
+observation
+* observations that are small are selected until they reach the limit
+* at least 2 smaller observed until the next larger observations are
+selected</p>
+</div></blockquote>
+<dl>
+<dt>plan<span class="classifier">list()</span></dt><dd><p>A list of strings that details the order of HPSOs that will be running
+for a given plan. These HPSOs will be derived from what is in the
+provided system-sizing dictionary.</p>
+<p>These strings are HPSOs - we need to link them to a pipeline as well
+(RCAL/Ingest we can consume together as ‘real-time’ pipelines,
+and so promote these as the range of compute required for real-time
+execution).</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">TopSim Pipelines</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, RW Bunney.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.5.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/observations.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
